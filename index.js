@@ -5,7 +5,7 @@ const projectId = process.env.GCLOUD_PROJECT_ID;
 exports.storeMonitoringMessage = async (message, context) => {
   try {
     const decodedMessage = message.data ? Buffer.from(message.data, 'base64').toString() : null;
-
+    console.log('decoded', decodedMessage)
     const db = new Firestore({
       projectId,
     });
