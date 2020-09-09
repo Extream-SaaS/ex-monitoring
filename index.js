@@ -5,7 +5,6 @@ const projectId = process.env.GCLOUD_PROJECT_ID;
 exports.storeMonitoringMessage = async (message) => {
   try {
     const decodedMessage = message.data ? Buffer.from(message.data, 'base64').toString() : null;
-    const parsed = JSON.parse(decodedMessage);
     console.log('decoded', decodedMessage)
     const db = new Firestore({
       projectId,
@@ -14,7 +13,7 @@ exports.storeMonitoringMessage = async (message) => {
     const docRef = db.collection('monitoring').doc();
 
     await docRef.set({
-      ...parsed,
+      ...decodedMessage,
       addedAt: Firestore.FieldValue.serverTimestamp()
     });
     return Promise.resolve();
