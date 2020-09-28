@@ -3,7 +3,7 @@
   on:
     push:
       paths:
-        - 'processor/**'
+        - 'storer/**'
 #      branches: [ master ]
 
   defaults:
