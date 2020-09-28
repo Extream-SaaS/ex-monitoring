@@ -4,7 +4,7 @@
     push:
       paths:
         - 'processor/**'
-      branches: [ master ]
+#      branches: [ master ]
 
   defaults:
     run:
