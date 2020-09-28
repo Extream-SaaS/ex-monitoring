@@ -1,14 +1,18 @@
-  name: Ex-Monitoring
+  name: Ex-Monitoring-Processor
 
   on:
     push:
+      paths:
+        - 'processor/**'
       branches: [ master ]
-    pull_request:
-      branches: [ master ]
+
+  defaults:
+    run:
+      working-directory: processor
 
   jobs:
     buildExMonitoring:
-      name: Build ex-monitoring
+      name: Build ex-monitoring-processor
       runs-on: ubuntu-latest
 
       strategy:
@@ -44,13 +48,13 @@
       steps:
         - uses: actions/checkout@v2
 
-        - name: Create variables.yaml
-          id: Create-Environment-Variables
-          uses: microsoft/variable-substitution@v1
-          with:
-            files: 'variables.yaml'
-          env:
-            GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
+#        - name: Create variables.yaml
+#          id: Create-Environment-Variables
+#          uses: microsoft/variable-substitution@v1
+#          with:
+#            files: 'variables.yaml'
+#          env:
+#            GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
 
         - name: Deploy to GCP
           id: Deploy
@@ -59,7 +63,7 @@
             PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
             APPLICATION_CREDENTIALS: ${{secrets.GCLOUD_CREDENTIALS}}
           with:
-            args: functions deploy monitoring-store-message --region europe-west2  --runtime nodejs12 --entry-point storeMonitoringMessage --env-vars-file variables.yaml --trigger-topic ex-monitoring --retry
+            args: functions deploy monitoring-processor --region europe-west2  --runtime nodejs12 --entry-point processMessages --retry
 
         - uses: act10ns/slack@v1
           env:
