@@ -2,9 +2,9 @@
 
   on:
     push:
-      paths:
-        - 'processor/**'
-      branches: [ master ]
+#      paths:
+#        - 'processor/**'
+#      branches: [ master ]
 
   defaults:
     run:
