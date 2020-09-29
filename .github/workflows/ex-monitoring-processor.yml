@@ -42,7 +42,7 @@
 
 
     deployExMonitoring:
-      name: Deploy ex-monitoring - Cloud Function
+      name: Deploy ex-monitoring-processor
       runs-on: ubuntu-latest
       needs: [buildExMonitoring]
       steps:

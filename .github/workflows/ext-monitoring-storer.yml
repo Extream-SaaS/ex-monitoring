@@ -48,7 +48,7 @@
 
 
     deployExMonitoring:
-      name: Deploy ex-monitoring-storer - Cloud Function
+      name: Deploy ex-monitoring-storer
       runs-on: ubuntu-latest
       needs: [buildExMonitoring]
       steps:
