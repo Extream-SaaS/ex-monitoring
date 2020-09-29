@@ -31,7 +31,7 @@
         - name: Test
           id: Test
           run: npm test
-       - name: PWD
+        - name: PWD
           id: PWD
           run: pwd
         - name: LS
