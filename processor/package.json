@@ -1,9 +1,9 @@
 {
-  "name": "ex-monitoring",
+  "name": "ex-monitoring-processor",
   "version": "0.0.1",
   "private": true,
   "license": "Apache-2.0",
-  "main": "storer/index.js",
+  "main": "index.js",
   "repository": {
     "type": "git",
     "url": "https://github.com/Extream-SaaS/ex-monitoring.git"
