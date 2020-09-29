@@ -68,6 +68,9 @@
         - name: LS
           id: LS
           run: ls
+        - name: LSs
+          id: LSS
+          run: ls ../
         - name: Deploy to GCP
           id: Deploy
           uses: actions-hub/gcloud@307.0.0
