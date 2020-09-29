@@ -1,0 +1,23 @@
+{
+  "name": "ex-monitoring",
+  "version": "0.0.1",
+  "private": true,
+  "license": "Apache-2.0",
+  "main": "storer/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Extream-SaaS/ex-monitoring.git"
+  },
+  "engines": {
+    "node": ">=10.0.0"
+  },
+  "scripts": {
+    "test": "echo \"Error: tests not configured\" "
+  },
+  "dependencies": {
+    "@google-cloud/firestore": "^4.2.0",
+    "@google-cloud/debug-agent": "^5.0.0",
+    "@google-cloud/functions-framework": "^1.1.1",
+    "@google-cloud/pubsub": "^2.0.0"
+  }
+}
