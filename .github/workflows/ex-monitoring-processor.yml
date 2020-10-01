@@ -2,9 +2,9 @@
 
   on:
     push:
-#      paths:
-#        - 'processor/**'
-#      branches: [ master ]
+      paths:
+        - 'processor/**'
+      branches: [ master ]
 
   defaults:
     run:
@@ -64,7 +64,7 @@
             PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
             APPLICATION_CREDENTIALS: ${{secrets.GCLOUD_CREDENTIALS}}
           with:
-            args: functions deploy monitoring-processor --region europe-west2  --runtime nodejs12 --source processor --entry-point processMessages --env-vars-file variables.yaml --trigger-http --alow-unauthenticated
+            args: functions deploy monitoring-processor --region europe-west2  --runtime nodejs12 --source processor --entry-point processMessages --env-vars-file variables.yaml --trigger-http --allow-unauthenticated
 
         - uses: act10ns/slack@v1
           env:

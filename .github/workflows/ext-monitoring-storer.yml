@@ -2,9 +2,9 @@
 
   on:
     push:
-#      paths:
-#        - 'storer/**'
-#      branches: [ master ]
+      paths:
+        - 'storer/**'
+      branches: [ master ]
 
   defaults:
     run:
@@ -31,12 +31,6 @@
         - name: Test
           id: Test
           run: npm test
-        - name: PWD
-          id: PWD
-          run: pwd
-        - name: LS
-          id: LS
-          run: ls
 
         - uses: act10ns/slack@v1
           env:
@@ -62,15 +56,6 @@
           env:
             GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
 
-        - name: PWD
-          id: PWD
-          run: pwd
-        - name: LS
-          id: LS
-          run: ls
-        - name: LSs
-          id: LSS
-          run: ls ../
         - name: Deploy to GCP
           id: Deploy
           uses: actions-hub/gcloud@307.0.0
