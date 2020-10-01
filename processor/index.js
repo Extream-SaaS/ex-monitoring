@@ -18,7 +18,7 @@ exports.processMessages = async (req, res) => {
         });
 
       const monitoringRef = db.collection('monitoring');
-      const snapshot = await monitoringRef.where('eventsId', '==', eventId).get();
+      const snapshot = await monitoringRef.where('eventId', '==', eventId).get();
       if (snapshot.empty) {
         console.log('No matching documents.');
         return res.sendStatus(404);
