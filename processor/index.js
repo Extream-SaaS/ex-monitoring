@@ -9,9 +9,10 @@ exports.processMessages = async (req, res) => {
       return res.sendStatus(401);
     }
   console.log('hellfro');
-    return Promise.resolve();
+    return res.sendStatus(200);
   } catch (e) {
     console.error(e);
-    return Promise.reject(e);
+    // return Promise.reject(e);
+    return res.sendStatus(500);
   }
 };
