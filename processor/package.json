@@ -12,6 +12,7 @@
     "node": ">=10.0.0"
   },
   "scripts": {
+    "serve-local": "env-cmd -f ./local-env.json functions-framework --target=processMessages",
     "test": "echo \"Error: tests not configured\" "
   },
   "dependencies": {
@@ -19,5 +20,8 @@
     "@google-cloud/debug-agent": "^5.0.0",
     "@google-cloud/functions-framework": "^1.1.1",
     "@google-cloud/pubsub": "^2.0.0"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0"
   }
 }
