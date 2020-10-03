@@ -2,6 +2,7 @@
 const Firestore = require('@google-cloud/firestore');
 const projectId = process.env.GCLOUD_PROJECT_ID;
 const authorizationHeader = process.env.AUTHORIZATION_HEADER;
+const environment = process.env.ENVIRONMENT || null;
 
 exports.processMessages = async (req, res) => {
     try {
@@ -13,10 +14,14 @@ exports.processMessages = async (req, res) => {
         }
         const eventId = req.body.eventId;
         console.log(`eventId: ${eventId}`);
-        const db = new Firestore({
+        const config = {
             projectId,
-            keyFilename: './keyfile.json',
-        });
+        };
+        if (!environment) {
+            config.keyFilename = './keyfile.json';
+        }
+
+        const db = new Firestore(config);
 
         const monitoringCollectionRef = db.collection('monitoring');
         const eventQuery = monitoringCollectionRef.where('eventId', '==', eventId);
