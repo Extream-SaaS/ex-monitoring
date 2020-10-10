@@ -1,0 +1,26 @@
+{
+    "name": "ex-monitoring-event-tracking-storer",
+    "version": "0.0.1",
+    "private": true,
+    "license": "Apache-2.0",
+    "main": "index.js",
+    "repository": {
+        "type": "git",
+        "url": "https://github.com/Extream-SaaS/ex-monitoring.git"
+    },
+    "engines": {
+        "node": ">=10.0.0"
+    },
+    "scripts": {
+        "serve-local": "env-cmd -f ./local-env.json functions-framework --port 7001 --target=storeEventTrackingMessage",
+        "test": "echo \"Error: tests not configured\""
+    },
+    "dependencies": {
+        "@google-cloud/firestore": "^4.2.0",
+        "@google-cloud/functions-framework": "^1.1.1"
+    },
+    "devDependencies": {
+        "eslint": "^7.11.0",
+        "env-cmd": "^10.1.0"
+    }
+}
