@@ -15,8 +15,10 @@ const db = new firestore(config);
 exports.processEventTrackingMessage = (event) => {
     try {
         const resource = event.value.name;
-        const affectedDoc = firestore.doc(resource.split('/documents/')[1]);
+        const affectedDoc = db.doc(resource.split('/documents/')[1]);
         console.log('affected', affectedDoc);
+        console.log('affected', affectedDoc.id);
+        console.log('affected', affectedDoc.data());
         //
         // // console.log('data', JSON.stringify(event.data));
         // // console.log('data data', JSON.stringify(event.data.data()));
