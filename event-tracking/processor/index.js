@@ -15,6 +15,8 @@ const db = new Firestore(config);
 exports.processEventTrackingMessage = (event) => {
     try {
 
+        const plain = event.value.toObject();
+        console.log('plain', JSON.stringify(plain));
         console.log('event1', JSON.stringify(event.data()));
         console.log('event', JSON.stringify(event.value));
         console.log('event2', JSON.stringify(event.value.data()));
