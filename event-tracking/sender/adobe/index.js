@@ -11,7 +11,7 @@ exports.sendEventTrackingMessage = async (message) => {
         const decodedMessage = message.data ? Buffer.from(message.data, 'base64').toString() : null;
         // const parsed = JSON.parse(decodedMessage);
         console.info('decoded', decodedMessage);
-        await pushToDeadletter(message);
+        await pushToDeadLetter(message);
         const error = new Error('broken');
         return Promise.reject(error);
     } catch (e) {
@@ -23,7 +23,7 @@ exports.sendEventTrackingMessage = async (message) => {
 
     }
 
-    async function pushToDeadletter(message) {
+    async function pushToDeadLetter(message) {
         await pubsub.topic('ex-monitoring-dead-letter').publish(message);
     }
 };
