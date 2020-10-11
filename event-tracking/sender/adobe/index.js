@@ -5,7 +5,8 @@ exports.sendEventTrackingMessage = async (message) => {
         const decodedMessage = message.data ? Buffer.from(message.data, 'base64').toString() : null;
         // const parsed = JSON.parse(decodedMessage);
         console.info('decoded', decodedMessage);
-        return Promise.reject();
+        const error = new Error('broken');
+        return Promise.reject(error);
     } catch (e) {
         console.error(e);
         return Promise.reject(e);
