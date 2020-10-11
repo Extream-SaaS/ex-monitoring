@@ -54,7 +54,7 @@
             PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
             APPLICATION_CREDENTIALS: ${{secrets.GCLOUD_CREDENTIALS}}
           with:
-            args: functions deploy monitoring-event-tracking-sender-adobe --region europe-west2  --runtime nodejs12 --source event-tracking/sender/adobe --entry-point sendEventTrackingMessage --trigger-topic ex-monitoring-event-tracking-adobe --retry
+            args: functions deploy monitoring-event-tracking-sender-adobe --region europe-west2  --runtime nodejs12 --source event-tracking/sender/adobe --entry-point sendEventTrackingMessage --trigger-topic ex-monitoring-event-tracking-adobe
 
         - uses: act10ns/slack@v1
           env:
