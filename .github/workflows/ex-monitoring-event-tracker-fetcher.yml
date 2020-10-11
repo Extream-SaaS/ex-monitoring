@@ -1,18 +1,18 @@
-  name: Ex-Monitoring-Event-Tracking-Storer
+  name: Ex-Monitoring-Event-Tracking-Fetcher
 
   on:
     push:
       paths:
-        - 'event-tracking/storer/**'
+        - 'event-tracking/fetcher/**'
       branches: [ master ]
 
   defaults:
     run:
-      working-directory: event-tracking/storer
+      working-directory: event-tracking/fetcher
 
   jobs:
     build:
-      name: Build ex-monitoring-event-tracking-storer
+      name: Build ex-monitoring-event-tracking-fetcher
       runs-on: ubuntu-latest
 
       strategy:
@@ -42,7 +42,7 @@
 
 
     deploy:
-      name: Deploy ex-monitoring-event-tracking-storer
+      name: Deploy ex-monitoring-event-tracking-fetcher
       runs-on: ubuntu-latest
       needs: [build]
       steps:
@@ -65,7 +65,7 @@
             PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
             APPLICATION_CREDENTIALS: ${{secrets.GCLOUD_CREDENTIALS}}
           with:
-            args: functions deploy monitoring-event-tracking-storer --region europe-west2  --runtime nodejs12 --source event-tracking/storer --entry-point storeEventTrackingMessage --env-vars-file variables.yaml --trigger-http --allow-unauthenticated
+            args: functions deploy monitoring-event-tracking-fetcher --region europe-west2  --runtime nodejs12 --source event-tracking/fetcher --entry-point fetchEventTrackingMessages --env-vars-file variables.yaml --trigger-http --allow-unauthenticated
 
         - uses: act10ns/slack@v1
           env:

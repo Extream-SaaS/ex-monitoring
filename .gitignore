@@ -124,3 +124,5 @@ dist
 .yarn/build-state.yml
 .pnp.*
 
+keyfile.json
+local-env.json
