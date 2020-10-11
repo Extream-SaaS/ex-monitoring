@@ -2,8 +2,8 @@
 
   on:
     push:
-#      paths:
-#        - 'event-tracking/processor/**'
+      paths:
+        - 'event-tracking/processor/**'
       branches: [ master ]
 
   defaults:

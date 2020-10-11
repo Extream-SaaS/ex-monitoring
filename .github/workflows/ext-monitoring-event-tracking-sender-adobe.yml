@@ -2,8 +2,8 @@
 
   on:
     push:
-#      paths:
-#        - 'event-tracking/sender/adobe/**'
+      paths:
+        - 'event-tracking/sender/adobe/**'
       branches: [ master ]
 
   defaults:
