@@ -1,0 +1,65 @@
+  name: Ex-Monitoring-Event-Tracking-Sender-Adobe
+
+  on:
+    push:
+      paths:
+        - 'event-tracking/sender/adobe/**'
+      branches: [ master ]
+
+  defaults:
+    run:
+      working-directory: event-tracking/sender/adobe
+
+  jobs:
+    build:
+      name: Build ex-monitoring-event-tracking-sender-adobe
+      runs-on: ubuntu-latest
+
+      strategy:
+        matrix:
+          node-version: [12.x]
+
+      steps:
+        - uses: actions/checkout@v2
+        - name: Use Node.js ${{ matrix.node-version }}
+          id: Build
+          uses: actions/setup-node@v1.4.3
+          with:
+            node-version: ${{ matrix.node-version }}
+        - run: npm ci
+        - run: npm run build --if-present
+        - name: Test
+          id: Test
+          run: npm test
+
+        - uses: act10ns/slack@v1
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          with:
+            status: ${{ job.status }}
+            steps: ${{ toJson(steps) }}
+          if: always()
+
+    deploy:
+      name: Deploy ex-monitoring-event-tracking-sender-adobe
+      runs-on: ubuntu-latest
+      needs: [build]
+      steps:
+        - uses: actions/checkout@v2
+
+        - name: Deploy to GCP
+          id: Deploy
+          uses: actions-hub/gcloud@307.0.0
+          env:
+            PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
+            APPLICATION_CREDENTIALS: ${{secrets.GCLOUD_CREDENTIALS}}
+          with:
+            args: functions deploy monitoring-event-tracking-sender-adobe --region europe-west2  --runtime nodejs12 --source event-tracking/sender/adobe --entry-point sendMonitoringMessage --trigger-topic ex-monitoring-event-tracking-adobe --retry
+
+        - uses: act10ns/slack@v1
+          env:
+            SLACK_WEBHOOK_URL: ${{ secrets.SLACK_WEBHOOK_URL }}
+          with:
+            status: ${{ job.status }}
+            steps: ${{ toJson(steps) }}
+          if: always()
