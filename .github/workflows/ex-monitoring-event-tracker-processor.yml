@@ -65,7 +65,7 @@
             PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
             APPLICATION_CREDENTIALS: ${{secrets.GCLOUD_CREDENTIALS}}
           with:
-            args: functions deploy monitoring-event-tracking-processor --region europe-west2  --runtime nodejs12 --source event-tracking/processor --entry-point processEventTrackingMessage --env-vars-file variables.yaml --trigger-event providers/cloud.firestore/eventTypes/document.create --trigger-resource projects/${{secrets.GCLOUD_PROJECT_ID}}/databases/(default)/documents/monitoring-event-tracking/{documentId}
+            args: "functions deploy monitoring-event-tracking-processor --region europe-west2  --runtime nodejs12 --source event-tracking/processor --entry-point processEventTrackingMessage --env-vars-file variables.yaml --trigger-event providers/cloud.firestore/eventTypes/document.create --trigger-resource projects/${{secrets.GCLOUD_PROJECT_ID}}/databases/(default)/documents/monitoring-event-tracking/{documentId}"
 
         - uses: act10ns/slack@v1
           env:
