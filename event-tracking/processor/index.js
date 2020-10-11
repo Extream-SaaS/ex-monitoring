@@ -1,5 +1,5 @@
 'use strict';
-const firestore = require('@google-cloud/firestore');
+const Firestore = require('@google-cloud/firestore');
 const projectId = process.env.GCLOUD_PROJECT_ID;
 const environment = process.env.ENVIRONMENT || null;
 
@@ -10,21 +10,20 @@ if (!environment) {
     config.keyFilename = './keyfile.json';
 }
 
-const db = new firestore(config);
+const db = new Firestore(config);
 
-exports.processEventTrackingMessage = (event) => {
+exports.processEventTrackingMessage = async (event) => {
     try {
         const resource = event.value.name;
-        const affectedDoc = db.doc(resource.split('/documents/')[1]);
-        console.log('affected', affectedDoc);
-        console.log('affected', affectedDoc.id);
-        console.log('affected', affectedDoc.data());
+        const docRef = db.doc(resource.split('/documents/')[1]);
+        const doc = await docRef.get();
+        console.log('doc id', doc.id);
+        console.log('doc data', doc.data());
         //
         // // console.log('data', JSON.stringify(event.data));
         // // console.log('data data', JSON.stringify(event.data.data()));
         // console.log('fields', JSON.stringify(event.value.fields));
         // console.log('fields data', JSON.stringify(event.value.fields.data()));
-        console.log('resource', event.resource);
         return Promise.resolve();
     } catch (e) {
         console.error(e);
