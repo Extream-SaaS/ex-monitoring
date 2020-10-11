@@ -1,7 +1,10 @@
 'use strict';
 const Firestore = require('@google-cloud/firestore');
+const {PubSub} = require('@google-cloud/pubsub');
+const grpc = require('grpc');
 const projectId = process.env.GCLOUD_PROJECT_ID;
 const environment = process.env.ENVIRONMENT || null;
+const pubsub = new PubSub({grpc, projectId});
 
 const config = {
     projectId,
@@ -17,29 +20,18 @@ exports.processEventTrackingMessage = async (event) => {
         const resource = event.value.name;
         const docRef = db.doc(resource.split('/documents/')[1]);
         const doc = await docRef.get();
-        console.log('doc id', doc.id);
-        console.log('doc data', doc.data());
-        //
-        // // console.log('data', JSON.stringify(event.data));
-        // // console.log('data data', JSON.stringify(event.data.data()));
-        // console.log('fields', JSON.stringify(event.value.fields));
-        // console.log('fields data', JSON.stringify(event.value.fields.data()));
+        const docData = doc.data();
+        await pushToQueue(docData.payload);
+        docData.processed = true;
+        await docRef.set(docData);
         return Promise.resolve();
     } catch (e) {
         console.error(e);
         return Promise.reject(e);
     }
-};
 
-// exports.processEventTrackingMessage = functions.firestore
-//     .document('monitoring-event-tracking/{document}')
-//     .onCreate((snapshot, context) => {
-//         try {
-//             const data = snapshot.data();
-//             console.log('data', data);
-//             return Promise.resolve();
-//         } catch (e) {
-//             console.error(e);
-//             return Promise.reject(e);
-//         }
-//     });
+    async function pushToQueue(data) {
+        const dataBuffer = Buffer.from(JSON.stringify(data));
+        await pubsub.topic('ex-monitoring-event-tracking-adobe').publish(dataBuffer);
+    }
+};
