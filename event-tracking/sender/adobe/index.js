@@ -19,6 +19,7 @@ exports.sendEventTrackingMessage = async (message) => {
     }
 
     async function sendRequest(data, attempt = 1) {
+        console.log(`attempt ${attempt}`);
         const config = {
             url: adobeEndpoint,
             method: 'POST',
@@ -28,7 +29,6 @@ exports.sendEventTrackingMessage = async (message) => {
             await axios(config);
         } catch (e) {
             if (attempt < 3) {
-                console.log(`attempt ${attempt}`);
                 await sendRequest(data, ++attempt);
             } else {
                 console.log('rejecting', e);
