@@ -29,7 +29,7 @@ exports.sendEventTrackingMessage = async (message) => {
         } catch (e) {
             if (attempt < 3) {
                 console.log(`attempt ${attempt}`);
-                await sendRequest(data, attempt++);
+                await sendRequest(data, ++attempt);
             } else {
                 console.log('rejecting', e);
                 await Promise.reject(e);
