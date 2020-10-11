@@ -15,7 +15,10 @@ const db = new Firestore(config);
 exports.processEventTrackingMessage = (event) => {
     try {
         console.log('event', JSON.stringify(event.value));
+        console.log('data', JSON.stringify(event.data));
+        console.log('data data', JSON.stringify(event.data.data()));
         console.log('fields', JSON.stringify(event.value.fields));
+        console.log('fields data', JSON.stringify(event.value.fields.data()));
         console.log('resource', event.resource);
         return Promise.resolve();
     } catch (e) {
