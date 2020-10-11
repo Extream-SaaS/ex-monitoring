@@ -24,6 +24,6 @@ exports.sendEventTrackingMessage = async (message) => {
     }
 
     async function pushToDeadletter(message) {
-        await pubsub.topic('ex-monitoring-dead-letter').publish(dataBuffer);
+        await pubsub.topic('ex-monitoring-dead-letter').publish(message);
     }
 };
