@@ -14,7 +14,7 @@ if (!environment) {
 const db = new Firestore(config);
 
 exports.storeEventTrackingMessage = async (req, res) => {
-    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Origin', 'https://extendsclass.com');
     res.set('Access-Control-Allow-Credentials', 'true');
     if (req.method === 'OPTIONS') {
         res.set('Access-Control-Allow-Methods', 'POST');
