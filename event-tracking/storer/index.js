@@ -2,7 +2,7 @@
 const Firestore = require('@google-cloud/firestore');
 const projectId = process.env.GCLOUD_PROJECT_ID;
 const environment = process.env.ENVIRONMENT || null;
-const authorizationHeader = process.env.AUTHORIZATION_HEADER;
+const authorizationHeader = process.env.EVENT_TRACKING_STORER_AUTHORIZATION_HEADER;
 
 const config = {
     projectId,

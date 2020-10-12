@@ -55,7 +55,7 @@
             files: 'variables.yaml'
           env:
             GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
-            AUTHORIZATION_HEADER: ${{ secrets.AUTHORIZATION_HEADER }}
+            EVENT_TRACKING_STORER_AUTHORIZATION_HEADER: ${{ secrets.EVENT_TRACKING_STORER_AUTHORIZATION_HEADER }}
             ENVIRONMENT: 'production'
 
         - name: Deploy to GCP
