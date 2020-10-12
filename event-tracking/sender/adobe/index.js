@@ -36,13 +36,14 @@ exports.sendEventTrackingMessage = async (message) => {
             // already been sent
             return Promise.resolve();
         }
+        console.log(`sending: ${id}`);
         await sendRequest(parsed.payload);
         console.log(`sent: ${id}`);
         docData.sent = Firestore.Timestamp.now();
         await docRef.set(docData);
         return Promise.resolve();
     } catch (e) {
-        console.error(e);
+        console.error('error', JSON.stringify(e));
         await pushToDeadLetter(decodedMessage);
         return Promise.reject(e);
     }
@@ -60,7 +61,6 @@ exports.sendEventTrackingMessage = async (message) => {
             if (attempt < 3) {
                 await sendRequest(data, ++attempt);
             } else {
-                console.log('rejecting', e);
                 await Promise.reject(e);
             }
         }
