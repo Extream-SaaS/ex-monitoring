@@ -20,7 +20,7 @@ exports.storeEventTrackingMessage = async (req, res) => {
         res.set('Access-Control-Allow-Methods', 'POST');
         res.set('Access-Control-Allow-Headers', 'Authorization', 'Content-Type');
         res.set('Access-Control-Max-Age', '3600');
-        res.sendStatus(204);
+        return res.sendStatus(204);
     }
     // res.set('Access-Control-Allow-Methods', 'POST');
     try {
