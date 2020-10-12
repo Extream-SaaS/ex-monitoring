@@ -37,7 +37,7 @@ exports.sendEventTrackingMessage = async (message) => {
             return Promise.resolve();
         }
         console.log(`sending: ${id}`);
-        await sendRequest(parsed.payload);
+        await sendRequest({interaction: parsed.payload});
         console.log(`sent: ${id}`);
         docData.sent = Firestore.Timestamp.now();
         await docRef.set(docData);
