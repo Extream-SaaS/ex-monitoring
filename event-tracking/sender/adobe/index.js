@@ -21,8 +21,8 @@ exports.sendEventTrackingMessage = async (message) => {
     const decodedMessage = message.data ? Buffer.from(message.data, 'base64').toString() : null;
     console.info('decoded', decodedMessage);
     try {
-        const id = decodedMessage.documentId;
-        console.log('doc id', id);
+        const parsed = JSON.parse(decodedMessage);
+        const id = parsed.documentId;
         const docRef = db.collection('monitoring-event-tracking').doc(id);
         const doc = await docRef.get();
         if (!doc.exists) {
@@ -36,7 +36,7 @@ exports.sendEventTrackingMessage = async (message) => {
             // already been sent
             return Promise.resolve();
         }
-        await sendRequest(decodedMessage.payload);
+        await sendRequest(parsed.payload);
         docData.sent = Firestore.Timestamp.now();
         await docRef.set(docData);
         return Promise.resolve();
