@@ -14,6 +14,8 @@ if (!environment) {
 const db = new Firestore(config);
 
 exports.storeEventTrackingMessage = async (req, res) => {
+    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Methods', 'POST');
     try {
         if (!req.headers.authorization || req.headers.authorization !== authorizationHeader) {
             return res.sendStatus(401);
