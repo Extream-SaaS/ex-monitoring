@@ -21,7 +21,7 @@ exports.processEventTrackingMessage = async (event) => {
         const docRef = db.doc(resource.split('/documents/')[1]);
         const doc = await docRef.get();
         const docData = doc.data();
-        await pushToQueue(docData.payload);
+        await pushToQueue(docData);
         docData.processed = Firestore.TimeStamp.now();
         await docRef.set(docData);
         return Promise.resolve();
