@@ -15,7 +15,13 @@ const db = new Firestore(config);
 
 exports.storeEventTrackingMessage = async (req, res) => {
     res.set('Access-Control-Allow-Origin', '*');
-    res.set('Access-Control-Allow-Methods', 'POST');
+    if (req.method === 'OPTIONS') {
+        res.set('Access-Control-Allow-Methods', 'POST');
+        res.set('Access-Control-Allow-Headers', 'Content-Type');
+        res.set('Access-Control-Max-Age', '3600');
+        res.sendStatus(204);
+    }
+    // res.set('Access-Control-Allow-Methods', 'POST');
     try {
         if (!req.headers.authorization || req.headers.authorization !== authorizationHeader) {
             return res.sendStatus(401);
