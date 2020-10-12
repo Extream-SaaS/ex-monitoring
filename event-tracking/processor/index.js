@@ -16,17 +16,19 @@ if (!environment) {
 const db = new Firestore(config);
 
 exports.processEventTrackingMessage = async (event) => {
+    const resource = event.value.name;
+    const docRef = db.doc(resource.split('/documents/')[1]);
+    const doc = await docRef.get();
+    const docData = doc.data();
     try {
-        const resource = event.value.name;
-        const docRef = db.doc(resource.split('/documents/')[1]);
-        const doc = await docRef.get();
-        const docData = doc.data();
-        await pushToQueue({...docData, documentId: doc.id});
         docData.processed = Firestore.Timestamp.now();
-        console.log(`processed: ${doc.id}`);
         await docRef.set(docData);
+        await pushToQueue({...docData, documentId: doc.id});
+        console.log(`processed: ${doc.id}`);
         return Promise.resolve();
     } catch (e) {
+        docData.processed = null;
+        await docRef.set(docData);
         console.error(e);
         return Promise.reject(e);
     }
