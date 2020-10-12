@@ -22,9 +22,10 @@ exports.sendEventTrackingMessage = async (message) => {
     console.info('decoded', decodedMessage);
     try {
         const id = decodedMessage.documentId;
+        console.log('doc id', id);
         const docRef = db.collection('monitoring-event-tracking').doc(id);
         const doc = await docRef.get();
-        if (doc.empty) {
+        if (!doc.exists) {
             const error = new Error('no matching document');
             console.error(error);
             await pushToDeadLetter(decodedMessage);
