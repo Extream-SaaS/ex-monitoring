@@ -1,16 +1,43 @@
 'use strict';
+const Firestore = require('@google-cloud/firestore');
 const {PubSub} = require('@google-cloud/pubsub');
 const grpc = require('grpc');
 const axios = require('axios');
 const projectId = process.env.GCLOUD_PROJECT_ID;
 const adobeEndpoint = process.env.ADOBE_EVENT_TRACKING_ENDPOINT;
+const environment = process.env.ENVIRONMENT || null;
 const pubsub = new PubSub({grpc, projectId});
+
+const config = {
+    projectId,
+};
+if (!environment) {
+    config.keyFilename = './keyfile.json';
+}
+
+const db = new Firestore(config);
 
 exports.sendEventTrackingMessage = async (message) => {
     const decodedMessage = message.data ? Buffer.from(message.data, 'base64').toString() : null;
     console.info('decoded', decodedMessage);
     try {
-        await sendRequest(decodedMessage);
+        const id = decodedMessage.documentId;
+        const docRef = db.collection('monitoring-event-tracking').doc(id);
+        const doc = await docRef.get();
+        if (doc.empty) {
+            const error = new Error('no matching document');
+            console.error(error);
+            await pushToDeadLetter(decodedMessage);
+            return Promise.reject(error);
+        }
+        const docData = doc.data();
+        if (docData.sent) {
+            // already been sent
+            return Promise.resolve();
+        }
+        await sendRequest(decodedMessage.payload);
+        docData.sent = Firestore.Timestamp.now();
+        await docRef.set(docData);
         return Promise.resolve();
     } catch (e) {
         console.error(e);
