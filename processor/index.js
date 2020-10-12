@@ -20,6 +20,8 @@ exports.processMessages = async (req, res) => {
         if (!environment) {
             config.keyFilename = './keyfile.json';
         }
+        const a = Firestore.Timestamp.now();
+        const b = Firestore.FieldValue.serverTimestamp();
 
         const db = new Firestore(config);
 
