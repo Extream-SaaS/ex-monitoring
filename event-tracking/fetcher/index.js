@@ -35,6 +35,12 @@ exports.fetchEventTrackingMessages = async (req, res) => {
             const docs = snapshot.docs.map((doc) => {
                 const data = doc.data();
                 data.addedAt = data.addedAt.toMillis();
+                if (data.processed) {
+                    data.processed = data.processed.toMillis();
+                }
+                if (data.sent) {
+                    data.sent = data.sent.toMillis();
+                }
                 return {
                     id: doc.id,
                     ...data,
