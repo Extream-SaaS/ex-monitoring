@@ -23,6 +23,7 @@ exports.processEventTrackingMessage = async (event) => {
         const docData = doc.data();
         await pushToQueue({...docData, documentId: doc.id});
         docData.processed = Firestore.Timestamp.now();
+        console.log(`processed: ${doc.id}`);
         await docRef.set(docData);
         return Promise.resolve();
     } catch (e) {
