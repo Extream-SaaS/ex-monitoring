@@ -1,5 +1,5 @@
 {
-    "name": "ex-monitoring-event-tracking-proccessor ",
+    "name": "ex-monitoring-event-tracking-proccessor",
     "version": "0.0.1",
     "private": true,
     "license": "Apache-2.0",
@@ -13,7 +13,7 @@
     },
     "scripts": {
         "serve-local": "env-cmd -f ./local-env.json functions-framework --port 7003 --target=processEventTrackingMessage",
-        "test": "echo \"Error: tests not configured\""
+        "test": "echo \"Error: tests not configured\" "
     },
     "dependencies": {
         "@google-cloud/firestore": "^4.2.0",
