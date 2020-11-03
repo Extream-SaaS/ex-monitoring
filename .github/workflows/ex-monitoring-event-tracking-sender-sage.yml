@@ -1,18 +1,18 @@
-  name: Ex-Monitoring-Processor
+  name: Ex-Monitoring-Event-Tracking-Sender-Sage
 
   on:
     push:
       paths:
-        - 'processor/**'
+        - 'event-tracking/sender/sage/**'
       branches: [ master ]
 
   defaults:
     run:
-      working-directory: processor
+      working-directory: event-tracking/sender/sage
 
   jobs:
-    buildExMonitoring:
-      name: Build ex-monitoring-processor
+    build:
+      name: Build ex-monitoring-event-tracking-sender-sage
       runs-on: ubuntu-latest
 
       strategy:
@@ -40,11 +40,10 @@
             steps: ${{ toJson(steps) }}
           if: always()
 
-
-    deployExMonitoring:
-      name: Deploy ex-monitoring-processor
+    deploy:
+      name: Deploy ex-monitoring-event-tracking-sender-sage
       runs-on: ubuntu-latest
-      needs: [buildExMonitoring]
+      needs: [build]
       steps:
         - uses: actions/checkout@v2
 
@@ -52,13 +51,12 @@
           id: Create-Environment-Variables
           uses: microsoft/variable-substitution@v1
           with:
-            files: 'variables.yaml'
+              files: 'variables.yaml'
           env:
-            GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
-            AUTHORIZATION_HEADER: ${{ secrets.AUTHORIZATION_HEADER }}
-            ADOBE_EVENT_ID: ${{ secrets.ADOBE_EVENT_ID }}
-            SAGE_EVENT_ID: ${{ secrets.SAGE_EVENT_ID }}
-            ENVIRONMENT: 'production'
+              GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
+              AUTHORIZATION_HEADER: ${{ secrets.AUTHORIZATION_HEADER }}
+              SAGE_EVENT_TRACKING_ENDPOINT: ${{ secrets.SAGE_EVENT_TRACKING_ENDPOINT }}
+              ENVIRONMENT: 'production'
 
         - name: Deploy to GCP
           id: Deploy
@@ -67,7 +65,7 @@
             PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
             APPLICATION_CREDENTIALS: ${{secrets.GCLOUD_CREDENTIALS}}
           with:
-            args: functions deploy monitoring-processor --region europe-west2  --runtime nodejs12 --source processor --entry-point processMessages --env-vars-file variables.yaml --trigger-http --allow-unauthenticated
+            args: functions deploy monitoring-event-tracking-sender-sage --region europe-west2  --runtime nodejs12 --source event-tracking/sender/sage --entry-point sendEventTrackingMessage --env-vars-file variables.yaml --trigger-topic ex-monitoring-event-tracking-sage
 
         - uses: act10ns/slack@v1
           env:

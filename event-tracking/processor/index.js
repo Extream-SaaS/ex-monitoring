@@ -5,6 +5,8 @@ const grpc = require('grpc');
 const projectId = process.env.GCLOUD_PROJECT_ID;
 const environment = process.env.ENVIRONMENT || null;
 const pubsub = new PubSub({grpc, projectId});
+const adobeId = process.env.ADOBE_EVENT_ID;
+const sageId = process.env.SAGE_EVENT_ID;
 
 const config = {
     projectId,
@@ -23,7 +25,8 @@ exports.processEventTrackingMessage = async (event) => {
     try {
         docData.processed = Firestore.Timestamp.now();
         await docRef.set(docData);
-        await pushToQueue({...docData, documentId: doc.id});
+        const queueName = getClientQueue(docData.eventId);
+        await pushToQueue({...docData, documentId: doc.id}, queueName);
         console.log(`processed: ${doc.id}`);
         return Promise.resolve();
     } catch (e) {
@@ -33,8 +36,19 @@ exports.processEventTrackingMessage = async (event) => {
         return Promise.reject(e);
     }
 
-    async function pushToQueue(data) {
+    async function pushToQueue(data, queueName) {
         const dataBuffer = Buffer.from(JSON.stringify(data));
-        await pubsub.topic('ex-monitoring-event-tracking-adobe').publish(dataBuffer);
+        await pubsub.topic(queueName).publish(dataBuffer);
+    }
+
+    function getClientQueue(eventId) {
+        switch (eventId) {
+        case adobeId:
+            return 'ex-monitoring-event-tracking-adobe';
+        case sageId:
+            return 'ex-monitoring-event-tracking-sage';
+        default:
+            throw new Error(`cannot find queue for eventId: ${eventId}`);
+        }
     }
 };

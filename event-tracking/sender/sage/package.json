@@ -1,5 +1,5 @@
 {
-    "name": "ex-monitoring-event-tracking-storer",
+    "name": "ex-monitoring-event-tracking-sender-sage",
     "version": "0.0.1",
     "private": true,
     "license": "Apache-2.0",
@@ -12,14 +12,14 @@
         "node": ">=10.0.0"
     },
     "scripts": {
-        "serve-local": "env-cmd -f ./local-env.json functions-framework --port 7001 --target=storeEventTrackingMessage",
-        "test": "echo \"Error: tests not configured\""
+        "serve-local": "env-cmd -f ./local-env.json functions-framework --port 7004 --target=sendEventTrackingMessage",
+        "test": "echo \"Error: tests not configured\" "
     },
     "dependencies": {
         "@google-cloud/firestore": "^4.2.0",
         "@google-cloud/functions-framework": "^1.1.1",
-        "cors": "^2.8.5",
         "@google-cloud/pubsub": "^2.3.0",
+        "axios": "^0.20.0",
         "grpc": "^1.24.3"
     },
     "devDependencies": {
