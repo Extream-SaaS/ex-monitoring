@@ -37,21 +37,17 @@ exports.sendEventTrackingMessage = async (message) => {
             // already been sent
             return Promise.resolve();
         }
+        if (docData.payload.session.action !== 'login') {
+            return Promise.resolve();
+        }
         console.log(`sending: ${id}`);
 
         const data = {
             profile: {
-                firstName: parsed.payload.firstName,
-                lastName: parsed.payload.lastName,
-                pin: parsed.payload.pin,
-            },
-            properties: {
-                'Custom Registration Property 5': [
-                    {
-                        field: 'Accessed On-Demand',
-                        value: 'Yes'
-                    }
-                ]
+                firstName: docData.payload.firstName,
+                lastName: docData.payload.lastName,
+                pin: docData.payload.pin,
+                registrationStatusLabel: docData.payload.registrationStatusLabel,
             },
         };
         await sendRequest(data);
