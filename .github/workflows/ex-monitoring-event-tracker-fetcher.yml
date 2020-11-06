@@ -52,7 +52,7 @@
           id: Create-Environment-Variables
           uses: microsoft/variable-substitution@v1
           with:
-            files: 'variables.yaml'
+            files: 'event-tracking/fetcher/variables.yaml'
           env:
             GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
             EVENT_TRACKING_FETCHER_AUTHORIZATION_HEADER: ${{ secrets.EVENT_TRACKING_FETCHER_AUTHORIZATION_HEADER }}
@@ -65,7 +65,7 @@
             PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
             APPLICATION_CREDENTIALS: ${{secrets.GCLOUD_CREDENTIALS}}
           with:
-            args: functions deploy monitoring-event-tracking-fetcher --region europe-west2  --runtime nodejs12 --source event-tracking/fetcher --entry-point fetchEventTrackingMessages --env-vars-file variables.yaml --trigger-http --allow-unauthenticated
+            args: functions deploy monitoring-event-tracking-fetcher --region europe-west2  --runtime nodejs12 --source event-tracking/fetcher --entry-point fetchEventTrackingMessages --env-vars-file event-tracking/fetcher/variables.yaml --trigger-http --allow-unauthenticated
 
         - uses: act10ns/slack@v1
           env:

@@ -51,7 +51,7 @@
           id: Create-Environment-Variables
           uses: microsoft/variable-substitution@v1
           with:
-              files: 'variables.yaml'
+              files: 'event-tracking/sender/adobe/variables.yaml'
           env:
               GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
               ADOBE_EVENT_TRACKING_ENDPOINT: ${{ secrets.ADOBE_EVENT_TRACKING_ENDPOINT }}
@@ -64,7 +64,7 @@
             PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
             APPLICATION_CREDENTIALS: ${{secrets.GCLOUD_CREDENTIALS}}
           with:
-            args: functions deploy monitoring-event-tracking-sender-adobe --region europe-west2  --runtime nodejs12 --source event-tracking/sender/adobe --entry-point sendEventTrackingMessage --env-vars-file variables.yaml --trigger-topic ex-monitoring-event-tracking-adobe
+            args: functions deploy monitoring-event-tracking-sender-adobe --region europe-west2  --runtime nodejs12 --source event-tracking/sender/adobe --entry-point sendEventTrackingMessage --env-vars-file event-tracking/sender/adobe/variables.yaml --trigger-topic ex-monitoring-event-tracking-adobe
 
         - uses: act10ns/slack@v1
           env:

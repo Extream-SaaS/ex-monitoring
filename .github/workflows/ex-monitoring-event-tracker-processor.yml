@@ -52,10 +52,9 @@
           id: Create-Environment-Variables
           uses: microsoft/variable-substitution@v1
           with:
-            files: 'variables.yaml'
+            files: 'event-tracking/processor/variables.yaml'
           env:
             GCLOUD_PROJECT_ID: ${{ secrets.GCLOUD_PROJECT_ID }}
-            AUTHORIZATION_HEADER: ${{ secrets.AUTHORIZATION_HEADER }}
             ADOBE_EVENT_ID: ${{ secrets.ADOBE_EVENT_ID }}
             SAGE_EVENT_ID: ${{ secrets.SAGE_EVENT_ID }}
             ENVIRONMENT: 'production'
@@ -67,7 +66,7 @@
             PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
             APPLICATION_CREDENTIALS: ${{secrets.GCLOUD_CREDENTIALS}}
           with:
-            args: functions deploy monitoring-event-tracking-processor --region europe-west2  --runtime nodejs12 --source event-tracking/processor --entry-point processEventTrackingMessage --env-vars-file variables.yaml --trigger-event providers/cloud.firestore/eventTypes/document.create --trigger-resource projects/${{secrets.GCLOUD_PROJECT_ID}}/databases/\(default\)/documents/monitoring-event-tracking/{documentId}
+            args: functions deploy monitoring-event-tracking-processor --region europe-west2  --runtime nodejs12 --source event-tracking/processor --entry-point processEventTrackingMessage --env-vars-file event-tracking/processor/variables.yaml --trigger-event providers/cloud.firestore/eventTypes/document.create --trigger-resource projects/${{secrets.GCLOUD_PROJECT_ID}}/databases/\(default\)/documents/monitoring-event-tracking/{documentId}
 
         - uses: act10ns/slack@v1
           env:
