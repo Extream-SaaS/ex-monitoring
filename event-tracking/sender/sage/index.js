@@ -43,11 +43,11 @@ exports.sendEventTrackingMessage = async (message) => {
         console.log(`sending: ${id}`);
 
         const data = {
+            registrationStatusLabel: docData.payload.registrationStatusLabel,
             profile: {
                 firstName: docData.payload.firstName,
                 lastName: docData.payload.lastName,
                 pin: docData.payload.pin,
-                registrationStatusLabel: docData.payload.registrationStatusLabel,
             },
         };
         await sendRequest(data);
