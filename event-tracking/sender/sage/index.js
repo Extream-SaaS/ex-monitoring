@@ -5,6 +5,7 @@ const grpc = require('grpc');
 const axios = require('axios');
 const projectId = process.env.GCLOUD_PROJECT_ID;
 const sageEndpoint = process.env.SAGE_EVENT_TRACKING_ENDPOINT;
+const authorizationHeader = process.env.SAGE_AUTHORIZATION_HEADER;
 const environment = process.env.ENVIRONMENT || null;
 const pubsub = new PubSub({grpc, projectId});
 
@@ -37,7 +38,23 @@ exports.sendEventTrackingMessage = async (message) => {
             return Promise.resolve();
         }
         console.log(`sending: ${id}`);
-        await sendRequest(parsed.payload);
+
+        const data = {
+            profile: {
+                firstName: parsed.payload.firstName,
+                lastName: parsed.payload.lastName,
+                pin: parsed.payload.pin,
+            },
+            properties: {
+                'Custom Registration Property 5': [
+                    {
+                        field: 'Accessed On-Demand',
+                        value: 'Yes'
+                    }
+                ]
+            },
+        };
+        await sendRequest(data);
         console.log(`sent: ${id}`);
         docData.sent = Firestore.Timestamp.now();
         await docRef.set(docData);
@@ -54,6 +71,9 @@ exports.sendEventTrackingMessage = async (message) => {
             url: sageEndpoint,
             method: 'POST',
             data: data,
+            headers: {
+                'Authorization': authorizationHeader,
+            },
         };
         try {
             await axios(config);
