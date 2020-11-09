@@ -50,7 +50,7 @@ exports.sendEventTrackingMessage = async (message) => {
             //     pin: docData.payload.pin,
             // },
         };
-        const endpoint = `${sageEndpoint}/${docData.payload.uuid}`;
+        const endpoint = `${sageEndpoint}/${docData.userId}`;
         await sendRequest(data, endpoint);
         console.log(`sent: ${id}`);
         docData.sent = Firestore.Timestamp.now();
@@ -78,12 +78,12 @@ exports.sendEventTrackingMessage = async (message) => {
         try {
             await axios(config);
         } catch (e) {
+            if(e.response){
+                console.error(`attempt ${attempt} error: ${e.response.data}`);
+            }
             if (attempt < 3) {
                 await sendRequest(data, endpoint, ++attempt);
             } else {
-                if(e.response){
-                    console.error(`attempt ${attempt} error: ${e.response.data}`);
-                }
                 await Promise.reject(e);
             }
         }
