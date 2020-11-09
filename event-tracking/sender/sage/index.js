@@ -79,8 +79,11 @@ exports.sendEventTrackingMessage = async (message) => {
             await axios(config);
         } catch (e) {
             if (attempt < 3) {
-                await sendRequest(data, ++attempt);
+                await sendRequest(data, endpoint, ++attempt);
             } else {
+                if(e.response){
+                    console.error(`attempt ${attempt} error: ${e.response.data}`);
+                }
                 await Promise.reject(e);
             }
         }
