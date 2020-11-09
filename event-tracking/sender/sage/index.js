@@ -44,27 +44,31 @@ exports.sendEventTrackingMessage = async (message) => {
 
         const data = {
             registrationStatusLabel: docData.payload.registrationStatusLabel,
-            profile: {
-                firstName: docData.payload.firstName,
-                lastName: docData.payload.lastName,
-                pin: docData.payload.pin,
-            },
+            // profile: {
+            //     firstName: docData.payload.firstName,
+            //     lastName: docData.payload.lastName,
+            //     pin: docData.payload.pin,
+            // },
         };
-        await sendRequest(data);
+        const endpoint = `${sageEndpoint}/${docData.payload.uuid}`;
+        await sendRequest(data, endpoint);
         console.log(`sent: ${id}`);
         docData.sent = Firestore.Timestamp.now();
         await docRef.set(docData);
         return Promise.resolve();
     } catch (e) {
         console.error('error', JSON.stringify(e));
+        if(e.response){
+            console.error(e.response.data);
+        }
         await pushToDeadLetter(decodedMessage);
         return Promise.reject(e);
     }
 
-    async function sendRequest(data, attempt = 1) {
+    async function sendRequest(data, endpoint, attempt = 1) {
         console.log(`attempt ${attempt}`);
         const config = {
-            url: sageEndpoint,
+            url: endpoint,
             method: 'POST',
             data: data,
             headers: {
