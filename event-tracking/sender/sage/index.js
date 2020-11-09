@@ -76,7 +76,8 @@ exports.sendEventTrackingMessage = async (message) => {
             },
         };
         try {
-            await axios(config);
+            const response = await axios(config);
+            console.info(response.status, response.data);
         } catch (e) {
             if(e.response){
                 console.error(`attempt ${attempt} error: ${e.response.data}`);
