@@ -21,9 +21,9 @@ const db = new Firestore(config);
 exports.sendEventTrackingMessage = async (message) => {
     const decodedMessage = message.data ? Buffer.from(message.data, 'base64').toString() : null;
     console.info('decoded', decodedMessage);
+    const parsed = JSON.parse(decodedMessage);
+    const id = parsed.documentId;
     try {
-        const parsed = JSON.parse(decodedMessage);
-        const id = parsed.documentId;
         const docRef = db.collection('monitoring-event-tracking').doc(id);
         const doc = await docRef.get();
         if (!doc.exists) {
@@ -61,7 +61,7 @@ exports.sendEventTrackingMessage = async (message) => {
         if(e.response){
             console.error(e.response.data);
         }
-        await pushToDeadLetter(decodedMessage);
+        await pushToDeadLetter(decodedMessage, id);
         return Promise.reject(e);
     }
 
@@ -90,7 +90,8 @@ exports.sendEventTrackingMessage = async (message) => {
         }
     }
 
-    async function pushToDeadLetter(data) {
+    async function pushToDeadLetter(data, documentId) {
+        console.info(`push to dead letter: ${documentId}`);
         const dataBuffer = Buffer.from(JSON.stringify(data));
         await pubsub.topic('ex-monitoring-event-tracking-sage-dead-letter').publish(dataBuffer);
     }
