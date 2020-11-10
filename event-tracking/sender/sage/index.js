@@ -37,20 +37,28 @@ exports.sendEventTrackingMessage = async (message) => {
             // already been sent
             return Promise.resolve();
         }
-        if (docData.payload.session.action !== 'login') {
+        if (parsed.payload.session.action !== 'login') {
             return Promise.resolve();
         }
         console.log(`sending: ${id}`);
 
         const data = {
-            registrationStatusLabel: docData.payload.registrationStatusLabel,
+            registrationStatusLabel: parsed.payload.registrationStatusLabel,
             // profile: {
             //     firstName: docData.payload.firstName,
             //     lastName: docData.payload.lastName,
             //     pin: docData.payload.pin,
             // },
         };
-        const endpoint = `${sageEndpoint}/${docData.userId}`;
+        let userId = parsed.userId;
+        if (!userId) {
+            userId = parsed.payload.uuid;
+            if (!userId) {
+                console.error(`cannot find userId: ${id}`);
+                return Promise.reject(new Error(`cannot find userId: ${id}`));
+            }
+        }
+        const endpoint = `${sageEndpoint}/${userId}`;
         await sendRequest(data, endpoint);
         console.log(`sent: ${id}`);
         docData.sent = Firestore.Timestamp.now();
