@@ -11,7 +11,7 @@
       working-directory: storer
 
   jobs:
-    buildExMonitoring:
+    build:
       name: Build ex-monitoring-storer
       runs-on: ubuntu-latest
 
@@ -41,10 +41,10 @@
           if: always()
 
 
-    deployExMonitoring:
+    deploy:
       name: Deploy ex-monitoring-storer
       runs-on: ubuntu-latest
-      needs: [buildExMonitoring]
+      needs: [build]
       steps:
         - uses: actions/checkout@v2
 
