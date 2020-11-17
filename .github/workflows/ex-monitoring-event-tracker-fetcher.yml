@@ -60,7 +60,7 @@
 
         - name: Deploy to GCP
           id: Deploy
-          uses: actions-hub/gcloud@307.0.0
+          uses: actions-hub/gcloud@318.0.0
           env:
             PROJECT_ID: ${{secrets.GCLOUD_PROJECT_ID}}
             APPLICATION_CREDENTIALS: ${{secrets.GCLOUD_CREDENTIALS}}
