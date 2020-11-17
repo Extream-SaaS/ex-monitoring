@@ -20,7 +20,7 @@
           node-version: [12.x]
 
       steps:
-        - uses: actions/checkout@v2
+        - uses: actions/checkout@v2-beta
         - name: Use Node.js ${{ matrix.node-version }}
           id: Build
           uses: actions/setup-node@v1.4.3
